@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="jumbotron">
+  <h1 class="display-4"><%= render @project %></h1>
+  <div>
+<br/><br/>
+  <%= link_to "Edit this project", edit_project_path(@project), class: "btn btn-success" %> |    
+  <%= link_to "Back to projects", projects_path, class: "btn btn-info" %>
+<br/> <br/>
+  <%= button_to "Destroy this project", @project, method: :delete, class: "btn btn-danger" %>
+</div>
+  
+</div>
+

@@ -1,0 +1,13 @@
+<!-- app/views/projects/_project.html.erb -->
+<tr id="<%= dom_id project %>">
+  <td>
+    <strong><%= project.Project_name %></strong>
+    <br>
+    <%= project.Project_description %>
+  </td>
+  <td>
+    <% unless current_page?(project_path(project)) %>
+      <%= link_to "Show this project", project, class: "btn btn-success" %>
+    <% end %>
+  </td>
+</tr>
