@@ -6,10 +6,10 @@
   <div>
     <br/><br/>
     <% if @project.creator == current_user || current_user.has_role?(:admin) %>
-      <%= link_to "Edit this project", edit_project_path(@project), class: "btn btn-success" %> |    
+      <%= link_to "Edit this project", edit_project_path(@project), class: "btn btn-success" %> <br/>    <br/>
       <%= button_to "Destroy this project", @project, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
     <% end %>
-
+<br/>
     <%= link_to "Back to projects", projects_path, class: "btn btn-info" %>
   </div>
 </div>

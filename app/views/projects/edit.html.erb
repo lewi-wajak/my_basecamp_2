@@ -8,8 +8,9 @@
   <br>
 
   <div>
-    <%= link_to "Show this project", @project, class: "btn btn-success" %> |
-    <%= link_to "Back to projects", projects_path, class: "btn btn-secondary" %>
+  <%= link_to "Show this project", @project, class: "btn btn-success", style: "margin-right: 10px;" %>
+  <%= link_to "Back to projects", projects_path, class: "btn btn-secondary" %>
+  
   </div>
 <% else %>
   <p class="alert alert-danger">You are not authorized to edit this project.</p>

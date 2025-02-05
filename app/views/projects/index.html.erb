@@ -14,10 +14,10 @@
       <tr>
         <td><%= project.Project_name %></td>
         <td>
-          <%= link_to "Show", project, class: "btn btn-info" %>
+          <%= link_to "Show", project, class: "btn btn-info mr-2" %>
 
           <% if project.creator == current_user || current_user.has_role?(:admin) %>
-            <%= link_to "Edit", edit_project_path(project), class: "btn btn-success" %> | 
+            <%= link_to "Edit", edit_project_path(project), class: "btn btn-success" %> <br/> <br/>
             <%= button_to "Destroy", project, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
           <% end %>
         </td>
