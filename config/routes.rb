@@ -19,6 +19,12 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   namespace :admin do
-    resources :users, only: [:index, :edit, :update, :destroy]
+    resources :users, only: [:index, :edit, :update] do
+      member do
+        patch :update_role  # Route for promoting/demoting users
+      end
+    end
   end
+  
+  
 end
