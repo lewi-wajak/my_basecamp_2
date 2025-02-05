@@ -1,5 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
+  <% if user_signed_in? %>
     <%= link_to "Basecamp", root_path, class:"navbar-brand" %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -17,19 +18,7 @@
       <li class="nav-item">
           <%= link_to "Admin Manager", home_about_path, class:"nav-link" %>
       </li>
-
-      <li class="nav-item">
-          <%= link_to "Sign Up", new_user_registration_path, class:"nav-link" %>
-      </li>
-
-      <li class="nav-item">
-          <%= link_to "Sign In", new_user_session_path, class:"nav-link" %>
-      </li>
-
-      <li class="nav-item">
-          <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class:"nav-link" %>
-      </li>
-
+      
       <li class="nav-item">
           <%= link_to "Edit Profile", edit_user_registration_path, class:"nav-link" %>
       </li>
@@ -37,12 +26,33 @@
         <li class="nav-item">
           <%= link_to "About Us", home_about_path, class:"nav-link" %>
       </li>
-        
-      </ul>
+
+      
+      <li class="nav-item">
+          <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-link btn btn-link", form: { class: "d-inline" } %>
+       </li>
+    
+
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
+
+      <% else %>
+        <li class="nav-item">
+          <%= link_to "Sign In", new_user_session_path, class:"nav-link" %>
+      </li>
+
+      <li class="nav-item">
+        <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-link btn btn-link", form: { class: "d-inline" } %>
+       </li>
+
+      <% end %>
+
+
+        
+      </ul> 
+      
     </div>
   </div>
 </nav>

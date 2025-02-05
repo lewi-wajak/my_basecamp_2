@@ -1,5 +1,14 @@
 class ProjectsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_project, only: %i[ show edit update destroy ]
+  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_user, only: [:edit, :update, :destroy]
+
+  def authorize_user
+    unless @project.creator == current_user || current_user.has_role?(:admin)
+      redirect_to projects_path, alert: "You are not authorized to perform this action."
+    end
+  end
 
   # GET /projects or /projects.json
   def index
@@ -21,8 +30,8 @@ class ProjectsController < ApplicationController
 
   # POST /projects or /projects.json
   def create
-    @project = Project.new(project_params)
-
+    @project = current_user.created_projects.build(project_params)  # Associate project with the creator
+  
     respond_to do |format|
       if @project.save
         format.html { redirect_to @project, notice: "Project was successfully created." }
@@ -33,6 +42,7 @@ class ProjectsController < ApplicationController
       end
     end
   end
+  
 
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
