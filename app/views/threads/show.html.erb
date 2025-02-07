@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @thread %>
+
+<div>
+  <%= link_to "Edit this thread", edit_thread_path(@thread) %> |
+  <%= link_to "Back to threads", threads_path %>
+
+  <%= button_to "Destroy this thread", @thread, method: :delete %>
+</div>

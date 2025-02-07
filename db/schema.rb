@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_07_115823) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_07_151511) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -76,6 +76,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_07_115823) do
     t.index ["user_id"], name: "index_roles_users_on_user_id"
   end
 
+  create_table "threads", force: :cascade do |t|
+    t.string "title"
+    t.integer "project_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_threads_on_project_id"
+    t.index ["user_id"], name: "index_threads_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -101,4 +111,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_07_115823) do
   add_foreign_key "project_users", "projects"
   add_foreign_key "project_users", "users"
   add_foreign_key "projects", "users"
+  add_foreign_key "threads", "projects"
+  add_foreign_key "threads", "users"
 end
