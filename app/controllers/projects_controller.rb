@@ -1,7 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: %i[ show edit update destroy ]
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: %i[show edit update destroy]
   before_action :authorize_user, only: [:edit, :update, :destroy]
 
   def authorize_user
@@ -31,7 +30,7 @@ class ProjectsController < ApplicationController
   # POST /projects or /projects.json
   def create
     @project = current_user.created_projects.build(project_params)  # Associate project with the creator
-  
+    
     respond_to do |format|
       if @project.save
         format.html { redirect_to @project, notice: "Project was successfully created." }
@@ -42,7 +41,6 @@ class ProjectsController < ApplicationController
       end
     end
   end
-  
 
   # PATCH/PUT /projects/1 or /projects/1.json
   def update
@@ -67,14 +65,45 @@ class ProjectsController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_project
-      @project = Project.find(params.expect(:id))
+  def create_attachment
+    @project = Project.find_by(id: params[:id])
+  
+    if @project.nil?
+      flash[:alert] = "Project not found."
+      redirect_to projects_path and return
     end
+  
+    if params[:attachment].present?
+      @project.attachments.attach(params[:attachment])
+      flash[:notice] = "Attachment uploaded successfully."
+    else
+      flash[:alert] = "Please select a file to upload."
+    end
+  
+    redirect_to @project
+  end
+  
 
-    # Only allow a list of trusted parameters through.
-    def project_params
-      params.expect(project: [ :Project_name, :Project_description ])
+  def destroy_attachment
+    @project = Project.find(params[:project_id])
+    @attachment = @project.attachments.find(params[:id])  # Use `params[:id]`, not `params[:attachment_id]`
+  
+    if @attachment.purge
+      redirect_to @project, notice: "Attachment deleted successfully."
+    else
+      redirect_to @project, alert: "Failed to delete attachment."
     end
+  end
+  
+  
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_project
+    @project = Project.find(params[:id])
+  end
+
+  def project_params
+    params.require(:project).permit(:project_name, :project_description, attachments: [])
+  end
 end

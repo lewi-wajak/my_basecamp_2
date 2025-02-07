@@ -1,9 +1,9 @@
 <!-- app/views/projects/_project.html.erb -->
 <tr id="<%= dom_id project %>">
   <td>
-    <strong><%= project.Project_name %></strong>
+    <strong><%= project.project_name %></strong>
     <br>
-    <%= project.Project_description %>
+    <%= project.project_description %>
   </td>
   <td>
     <% unless current_page?(project_path(project)) %>

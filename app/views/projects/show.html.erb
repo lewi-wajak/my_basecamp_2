@@ -3,13 +3,42 @@
 
   <p><strong>Created By:</strong> <%= @project.creator.email if @project.creator %></p>
 
+  
+  <h3>Attachments:</h3>
+  <% if @project.attachments.any? %>
+    <ul>
+      <% @project.attachments.each do |attachment| %>
+        <li>
+          <%= link_to attachment.filename.to_s, url_for(attachment), target: "_blank" %>
+
+          <% if @project.creator == current_user || current_user.has_role?(:admin) %>
+            <%= button_to "Delete", project_attachment_path(@project, attachment), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No attachments uploaded yet.</p>
+  <% end %>
+
+  
+  <% if @project.creator == current_user || current_user.has_role?(:admin) %>
+    <%= form_with url: create_attachment_project_path(@project), method: :post, local: true, html: { multipart: true } do |form| %>
+      <div class="form-group">
+        <%= form.label :attachment, "Upload Attachment" %>
+        <%= form.file_field :attachment, class: "form-control" %>
+      </div>
+      <%= form.submit "Add Attachment", class: "btn btn-primary" %>
+    <% end %>
+  <% end %>
+
   <div>
     <br/><br/>
     <% if @project.creator == current_user || current_user.has_role?(:admin) %>
-      <%= link_to "Edit this project", edit_project_path(@project), class: "btn btn-success" %> <br/>    <br/>
+      <%= link_to "Edit this project", edit_project_path(@project), class: "btn btn-success" %> <br/><br/>
       <%= button_to "Destroy this project", @project, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
     <% end %>
-<br/>
+    <br/>
     <%= link_to "Back to projects", projects_path, class: "btn btn-info" %>
   </div>
 </div>
