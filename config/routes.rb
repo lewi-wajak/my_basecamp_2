@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   
   resources :projects do
     resources :project_threads do
-      resources :messages, only: [:create, :destroy]
+      resources :messages, only: [:create, :edit, :update, :destroy]
     end
   end
   

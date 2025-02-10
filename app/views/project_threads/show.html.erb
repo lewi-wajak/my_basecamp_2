@@ -13,3 +13,34 @@
 <div>
   <%= link_to "Back to Project", project_path(@project), class: "btn btn-secondary" %>
 </div>
+
+<h3>Messages</h3>
+
+<% if @project.users.include?(current_user) || @project.creator == current_user %>
+
+  <%= form_with(model: [@project, @project_thread, Message.new], local: true) do |form| %>
+    <div>
+      <%= form.label :content, "New Message" %>
+      <%= form.text_area :content, class: "form-control" %>
+    </div>
+    <br/>
+    <div>
+      <%= form.submit "Send Message", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+<% else %>
+  <p>You must be a project member to send messages.</p>
+<% end %>
+
+<ul>
+  <% @project_thread.messages.each do |message| %>
+    <li>
+      <strong><%= message.user.email %></strong>: <%= message.content %>
+
+      <% if message.user == current_user || current_user.has_role?(:admin) %>
+        <%= link_to "Edit", edit_project_project_thread_message_path(@project, @project_thread, message), class: "btn btn-warning btn-sm" %>
+        <%= link_to "Delete", project_project_thread_message_path(@project, @project_thread, message), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
