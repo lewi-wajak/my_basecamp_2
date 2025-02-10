@@ -1,0 +1,11 @@
+<% content_for :title, "New Thread" %>
+
+<h1>New Thread</h1>
+
+<%= render "form", thread: @project_thread, project: @project %>
+
+<br>
+
+<div>
+  <%= link_to "Back to Threads", project_project_threads_path(@project), class: "btn btn-secondary" %>
+</div>

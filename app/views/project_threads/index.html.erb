@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Threads" %>
+
+<h1>Threads</h1>
+
+<div id="threads">
+  <% @threads&.each do |thread| %>
+    <%= render partial: "project_threads/thread", locals: { thread: thread } %>
+    <p>
+      <%= link_to "Show this thread", project_project_thread_path(@project, thread) %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New Thread", new_project_project_thread_path(@project), class: "btn btn-primary" %>

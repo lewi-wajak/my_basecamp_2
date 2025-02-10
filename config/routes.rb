@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :threads
   devise_for :users
-  root 'home#index'
+  root 'home#index' 
 
   resources :projects do
     resources :attachments, only: [:destroy], controller: "projects"
@@ -11,9 +11,16 @@ Rails.application.routes.draw do
     post 'create_attachment', on: :member
   end
   
+  resources :projects do
+    resources :project_threads do
+      resources :messages, only: [:create, :destroy]
+    end
+  end
+  
+  
+  
 
-
-  # Admin routes for user management
+  # my route for user management
   namespace :admin do
     resources :users, only: [:index, :edit, :update] do
       member do
@@ -22,7 +29,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # Other routes
+ 
   get "home/about", to: "home#about"
   get "up" => "rails/health#show", as: :rails_health_check
 end

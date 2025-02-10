@@ -1,0 +1,11 @@
+<% content_for :title, "Edit Thread" %>
+
+<h1>Edit Thread</h1>
+
+<%= render "form", project: @project, project_thread: @project_thread %>
+
+<br/>
+
+<div>
+  <%= link_to "Back to Project", project_path(@project), class: "btn btn-secondary" %>
+</div>

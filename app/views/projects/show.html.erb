@@ -42,3 +42,26 @@
     <%= link_to "Back to projects", projects_path, class: "btn btn-info" %>
   </div>
 </div>
+
+
+<h2>Threads</h2>
+
+<% if @project.project_threads.any? %>
+  <ul>
+    <% @project.project_threads.each do |thread| %>
+      <li>
+        <%= link_to thread.title, project_project_thread_path(@project, thread) %>
+        <% if @project.creator == current_user || current_user.has_role?(:admin) %>
+          <%= link_to "Edit", edit_project_project_thread_path(@project, thread), class: "btn btn-warning btn-sm" %>
+          <%= button_to "Delete", project_project_thread_path(@project, thread), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No threads yet. Start a discussion!</p>
+<% end %>
+
+<% if @project.creator == current_user || current_user.has_role?(:admin) %>
+  <%= link_to "New Thread", new_project_project_thread_path(@project), class: "btn btn-primary" %>
+<% end %>

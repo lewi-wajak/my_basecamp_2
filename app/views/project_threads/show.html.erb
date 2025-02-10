@@ -1,0 +1,15 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render partial: "project_threads/thread", locals: { thread: @project_thread } %>
+
+<div>
+<%= link_to "Edit", edit_project_project_thread_path(@project, @project_thread), class: "btn btn-warning" %>
+
+<%= button_to "Delete", project_project_thread_path(@project, @project_thread), method: :delete, data: { confirm: "Are you sure you want to delete this thread?" }, class: "btn btn-danger" %>
+
+</div>
+
+
+<div>
+  <%= link_to "Back to Project", project_path(@project), class: "btn btn-secondary" %>
+</div>

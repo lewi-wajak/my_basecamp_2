@@ -1,0 +1,18 @@
+<div id="<%= dom_id thread %>" class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title"><strong>Title:</strong> <%= thread.title %></h5>
+    
+    <p>
+  <strong>Project:</strong>
+  <%= link_to thread.project.project_name, project_path(thread.project) if thread.project %>
+</p>
+
+    
+    <p>
+      <strong> Created by:</strong>
+<%= thread.user.email if thread.user %>
+    </p>
+    
+    <p><strong>Created at:</strong> <%= thread.created_at.strftime("%B %d, %Y %I:%M %p") %></p>
+  </div>
+</div>

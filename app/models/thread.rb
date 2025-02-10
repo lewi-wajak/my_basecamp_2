@@ -1,4 +1,0 @@
-class Thread < ApplicationRecord
-  belongs_to :project
-  belongs_to :user
-end
