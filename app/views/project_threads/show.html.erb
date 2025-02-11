@@ -1,23 +1,15 @@
-<p style="color: green"><%= notice %></p>
-
 <%= render partial: "project_threads/thread", locals: { thread: @project_thread } %>
 
-<div>
-<% if current_user.has_role?(:admin) %>
-  <%= link_to "Edit Thread", edit_project_project_thread_path(@project, @project_thread), class: "btn btn-warning" %>
-  <%= button_to "Delete Thread", project_project_thread_path(@project, @project_thread), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
-<% end %>
-
+<div class="d-flex justify-content-between mt-3">
+  <% if current_user.has_role?(:admin) %>
+    <%= link_to "Edit Thread", edit_project_project_thread_path(@project, @project_thread), class: "btn btn-warning" %>
+    <%= button_to "Delete Thread", project_project_thread_path(@project, @project_thread), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+  <% end %>
 </div>
-
-
-<div>
-  <%= link_to "Back to Project", project_path(@project), class: "btn btn-secondary" %>
-</div>
-
+<br/>
 <h3>Messages</h3>
 
-<% if @project.users.include?(current_user) || @project.creator == current_user %>
+<% if @project.users.include?(current_user) || @project.creator == current_user || current_user.has_role?(:admin) %>
 
   <%= form_with(model: [@project, @project_thread, Message.new], local: true) do |form| %>
     <div>
@@ -38,15 +30,25 @@
     <li>
       <strong><%= message.user.email %></strong>: <%= message.content %>
 
-      <% if message.user == current_user || current_user.has_role?(:admin) %>
-        <%= link_to "Edit", edit_project_project_thread_message_path(@project, @project_thread, message), class: "btn btn-warning btn-sm" %>
-       <%= button_to "Delete", project_project_thread_message_path(@project, @project_thread, message), 
+     <% if message.user == current_user %>
+  <%= link_to "Edit", edit_project_project_thread_message_path(@project, @project_thread, message), class: "btn btn-warning btn-sm" %>
+  <%= button_to "Delete", project_project_thread_message_path(@project, @project_thread, message), 
   method: :delete, 
   form: { data: { turbo: "false" } }, 
   data: { confirm: "Are you sure?" }, 
   class: "btn btn-danger btn-sm" %>
 
-      <% end %>
+<% elsif current_user.has_role?(:admin) %>
+  <%= button_to "Delete", project_project_thread_message_path(@project, @project_thread, message), 
+  method: :delete, 
+  form: { data: { turbo: "false" } }, 
+  data: { confirm: "Are you sure?" }, 
+  class: "btn btn-danger btn-sm" %>
+<% end %>
     </li>
   <% end %>
 </ul>
+
+<div>
+  <%= link_to "Back to Project", project_path(@project), class: "btn btn-secondary" %>
+</div>

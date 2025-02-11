@@ -2,9 +2,10 @@ class MessagesController < ApplicationController
   before_action :set_project_and_thread
   before_action :set_message, only: [:edit, :update, :destroy]
   before_action :authorize_project_member, only: [:create, :edit, :update, :destroy]
-  before_action :authorize_user, only: [:edit, :update, :destroy]
+  before_action :authorize_user_edit, only: [:edit, :update]  
+  before_action :authorize_user_delete, only: [:destroy]      
 
-  def create
+  def create 
     @message = @project_thread.messages.new(message_params)
     @message.user = current_user
 
@@ -27,8 +28,6 @@ class MessagesController < ApplicationController
   end
 
   def destroy
-    @message = @project_thread.messages.find(params[:id])
-    
     if @message.user == current_user || current_user.has_role?(:admin)
       @message.destroy
       redirect_to project_project_thread_path(@project, @project_thread), notice: "Message deleted successfully!"
@@ -36,7 +35,7 @@ class MessagesController < ApplicationController
       redirect_to project_project_thread_path(@project, @project_thread), alert: "You are not authorized to delete this message."
     end
   end
-  
+
   private
 
   def set_project_and_thread
@@ -48,9 +47,16 @@ class MessagesController < ApplicationController
     @message = @project_thread.messages.find(params[:id])
   end
 
-  def authorize_user
+   def authorize_user_edit
+    unless @message.user == current_user
+      redirect_to project_project_thread_path(@project, @project_thread), alert: "You can't edit this message."
+    end
+  end
+
+  
+  def authorize_user_delete
     unless @message.user == current_user || current_user.has_role?(:admin)
-      redirect_to project_project_thread_path(@project, @project_thread), alert: "You can't edit or delete this message."
+      redirect_to project_project_thread_path(@project, @project_thread), alert: "You can't delete this message."
     end
   end
 

@@ -15,14 +15,21 @@ class ProjectThreadsController < ApplicationController
   end
 
   def create
+    unless current_user.has_role?(:admin)
+      redirect_to project_project_threads_path(@project), alert: "Only admins can create threads."
+      return
+    end
+  
     @project_thread = @project.project_threads.new(thread_params)
-
+    @project_thread.user = current_user  # ✅ Assign the current user
+  
     if @project_thread.save
       redirect_to project_project_thread_path(@project, @project_thread), notice: "Thread created successfully!"
     else
       render :new
     end
   end
+  
 
   def edit
   end
