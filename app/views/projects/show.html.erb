@@ -3,16 +3,18 @@
 
   <p><strong>Created By:</strong> <%= @project.creator.email if @project.creator %></p>
 
-  
   <h3>Attachments:</h3>
   <% if @project.attachments.any? %>
     <ul>
       <% @project.attachments.each do |attachment| %>
         <li>
           <%= link_to attachment.filename.to_s, url_for(attachment), target: "_blank" %>
-
+          
           <% if @project.creator == current_user || current_user.has_role?(:admin) %>
-            <%= button_to "Delete", project_attachment_path(@project, attachment), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+          <%= button_to "Delete", project_destroy_attachment_path(@project, attachment.id), 
+          method: :delete, data: { confirm: "Are you sure?" }, 
+          class: "btn btn-danger btn-sm" %>
+    
           <% end %>
         </li>
       <% end %>
@@ -21,7 +23,6 @@
     <p>No attachments uploaded yet.</p>
   <% end %>
 
-  
   <% if @project.creator == current_user || current_user.has_role?(:admin) %>
     <%= form_with url: create_attachment_project_path(@project), method: :post, local: true, html: { multipart: true } do |form| %>
       <div class="form-group">
@@ -33,12 +34,14 @@
   <% end %>
 
   <div class="d-flex justify-content-between align-items-center mt-4">
-  <% if @project.creator == current_user || current_user.has_role?(:admin) %>
-    <%= link_to "Edit this project", edit_project_path(@project), class: "btn btn-success" %>
-    <%= button_to "Destroy this project", @project, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
-  <% end %>
-  <%= link_to "Back to projects", projects_path, class: "btn btn-info" %>
+    <% if @project.creator == current_user || current_user.has_role?(:admin) %>
+      <%= link_to "Edit this project", edit_project_path(@project), class: "btn btn-success" %>
+      <%= button_to "Destroy this project", @project, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    <% end %>
+    <%= link_to "Back to projects", projects_path, class: "btn btn-info" %>
+  </div>
 </div>
+
 <br/>
 
 <h2>Threads</h2>
@@ -48,11 +51,12 @@
     <% @project.project_threads.each do |thread| %>
       <li>
         <%= link_to thread.title, project_project_thread_path(@project, thread) %>
-        <% if current_user.has_role?(:admin) %>
-        <%= link_to "Edit Thread", edit_project_project_thread_path(@project, thread), class: "btn btn-warning" %>
-        <%= button_to "Delete Thread", project_project_thread_path(@project, thread), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
         
-<% end %>
+        <% if current_user.has_role?(:admin) %>
+          <%= link_to "Edit Thread", edit_project_project_thread_path(@project, thread), class: "btn btn-warning" %>
+          <%= button_to "Delete Thread", project_project_thread_path(@project, thread), method: :delete, 
+                class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+        <% end %>
       </li>
     <% end %>
   </ul>
@@ -63,4 +67,3 @@
 <% if current_user.has_role?(:admin) %>
   <%= link_to "New Thread", new_project_project_thread_path(@project), class: "btn btn-primary" %>
 <% end %>
-

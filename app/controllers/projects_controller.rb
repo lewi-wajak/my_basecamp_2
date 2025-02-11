@@ -41,9 +41,13 @@ class ProjectsController < ApplicationController
     end
   end
 
-   def update
+  def update
+    if params[:project][:attachments].present?
+      @project.attachments.attach(params[:project][:attachments])
+    end
+  
     respond_to do |format|
-      if @project.update(project_params)
+      if @project.update(project_params.except(:attachments))  # Exclude attachments from being reset
         format.html { redirect_to @project, notice: "Project was successfully updated." }
         format.json { render :show, status: :ok, location: @project }
       else
@@ -52,6 +56,7 @@ class ProjectsController < ApplicationController
       end
     end
   end
+  
 
  
   def destroy
@@ -83,14 +88,14 @@ class ProjectsController < ApplicationController
   
 
   def destroy_attachment
-    @project = Project.find(params[:project_id])
-    @attachment = @project.attachments.find(params[:id])  # Use `params[:id]`, not `params[:attachment_id]`
+    @project = Project.find_by(id: params[:project_id])
+    return redirect_to projects_path, alert: "Project not found." if @project.nil?
   
-    if @attachment.purge
-      redirect_to @project, notice: "Attachment deleted successfully."
-    else
-      redirect_to @project, alert: "Failed to delete attachment."
-    end
+    @attachment = @project.attachments.find_by(blob_id: params[:id])  # 🔥 Use blob_id for ActiveStorage attachments
+    return redirect_to @project, alert: "Attachment not found." if @attachment.nil?
+  
+    @attachment.purge
+    redirect_to @project, notice: "Attachment deleted successfully."
   end
   
   

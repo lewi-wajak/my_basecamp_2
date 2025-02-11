@@ -61,10 +61,11 @@ class MessagesController < ApplicationController
   end
 
   def authorize_project_member
-    unless @project.users.include?(current_user) || @project.creator == current_user
+    unless @project.users.include?(current_user) || @project.creator == current_user || current_user.has_role?(:admin)
       redirect_to project_path(@project), alert: "You must be a project member to perform this action."
     end
   end
+  
 
   def message_params
     params.require(:message).permit(:content)
