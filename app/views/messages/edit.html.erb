@@ -1,0 +1,14 @@
+<h1>Edit Message</h1>
+
+<%= form_with(model: [@project, @project_thread, @message], local: true) do |form| %>
+  <div>
+    <%= form.label :content, "Edit your message:" %>
+    <%= form.text_area :content, class: "form-control" %>
+  </div>
+  <br/>
+  <div>
+    <%= form.submit "Update Message", class: "btn btn-primary" %>
+  </div>
+<% end %>
+<br/>
+<%= link_to "Back to Thread", project_project_thread_path(@project, @project_thread), class: "btn btn-secondary" %>

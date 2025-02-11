@@ -62,6 +62,7 @@
   <p>No threads yet. Start a discussion!</p>
 <% end %>
 
-<% if @project.creator == current_user || current_user.has_role?(:admin) %>
+<% if current_user.has_role?(:admin) %>
   <%= link_to "New Thread", new_project_project_thread_path(@project), class: "btn btn-primary" %>
 <% end %>
+

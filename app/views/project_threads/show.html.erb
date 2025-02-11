@@ -3,9 +3,10 @@
 <%= render partial: "project_threads/thread", locals: { thread: @project_thread } %>
 
 <div>
-<%= link_to "Edit", edit_project_project_thread_path(@project, @project_thread), class: "btn btn-warning" %>
-
-<%= button_to "Delete", project_project_thread_path(@project, @project_thread), method: :delete, data: { confirm: "Are you sure you want to delete this thread?" }, class: "btn btn-danger" %>
+<% if current_user.has_role?(:admin) %>
+  <%= link_to "Edit Thread", edit_project_project_thread_path(@project, @project_thread), class: "btn btn-warning" %>
+  <%= button_to "Delete Thread", project_project_thread_path(@project, @project_thread), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+<% end %>
 
 </div>
 
@@ -39,7 +40,12 @@
 
       <% if message.user == current_user || current_user.has_role?(:admin) %>
         <%= link_to "Edit", edit_project_project_thread_message_path(@project, @project_thread, message), class: "btn btn-warning btn-sm" %>
-        <%= link_to "Delete", project_project_thread_message_path(@project, @project_thread, message), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+       <%= button_to "Delete", project_project_thread_message_path(@project, @project_thread, message), 
+  method: :delete, 
+  form: { data: { turbo: "false" } }, 
+  data: { confirm: "Are you sure?" }, 
+  class: "btn btn-danger btn-sm" %>
+
       <% end %>
     </li>
   <% end %>
