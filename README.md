@@ -36,7 +36,7 @@ Attachments in Projects
 Upload and attach files to projects (Attachment create).
 Delete project attachments (Attachment destroy).
 
-- Project Threads & Messages
+-Project Threads & Messages
 Threads (Admin-Only)
 Admins can create discussion threads inside projects (Thread new).
 Admins can edit discussion threads (Thread edit).
