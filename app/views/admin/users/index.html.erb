@@ -13,7 +13,7 @@
       <% @users.each do |user| %>
         <tr>
           <td><%= user.email %></td>
-          <td><%= user.roles.map(&:name).join(', ') %></td>
+          <td><%= user.has_role?(:admin) ? "Admin" : "User" %></td>
           <td>
             <% if user.has_role?(:admin) %>
               <%= button_to "Demote to User", update_role_admin_user_path(user), method: :patch, params: { role: "user" }, class: "btn btn-danger btn-sm" %>
