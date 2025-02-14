@@ -15,11 +15,10 @@
             <%= link_to "New Project", new_project_path, class: "nav-link" %>
           </li>
           
-          <% if current_user.has_role?(:admin) %>
-            <li class="nav-item">
+           <li class="nav-item">
               <%= link_to "Admin Manager", admin_users_path, class: "nav-link" %>
             </li>
-          <% end %>
+          
           <li class="nav-item">
             <%= link_to "About Us", home_about_path, class: "nav-link" %>
           </li>
