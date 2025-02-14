@@ -30,7 +30,7 @@ gem "solid_cable"
 
 gem 'rolify'
 
-
+gem "pg"
 gem "devise"
 
 # Reduces boot times through caching; required in config/boot.rb

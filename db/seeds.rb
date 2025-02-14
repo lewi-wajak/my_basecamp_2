@@ -7,4 +7,4 @@ if user
   puts "Admin role assigned to #{user.email}"
 else
   puts "User not found! Make sure the user exists before running this."
-endcd cd
+end
