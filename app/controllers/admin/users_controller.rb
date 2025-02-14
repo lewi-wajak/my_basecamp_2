@@ -1,33 +1,34 @@
 class Admin::UsersController < ApplicationController
-  before_action :authenticate_user!
-  before_action :authorize_admin, except: [:update_role] # Allow anyone to access update_role temporarily
-
-  def index
-    @users = User.all
-  end
-
-  def edit
-    @user = User.find(params[:id])
-  end
-
-  def update_role
-    user = User.find(params[:id])
-
-    if params[:role] == "admin"
-      user.add_role(:admin) unless user.has_role?(:admin)
-      flash[:notice] = "#{user.email} is now an admin."
-    else
-      user.remove_role(:admin) if user.has_role?(:admin)
-      flash[:notice] = "#{user.email} is now a regular user."
+    before_action :authenticate_user!
+    before_action :authorize_admin
+  
+    def index
+      @users = User.all
     end
 
-    redirect_to admin_users_path
+    def edit
+        @user = User.find(params[:id])
+    end
+    
+  
+    def update_role
+      user = User.find(params[:id])
+      
+      if params[:role] == "admin"
+        user.add_role(:admin) unless user.has_role?(:admin)
+        flash[:notice] = "#{user.email} is now an admin."
+      else
+        user.remove_role(:admin) if user.has_role?(:admin)
+        flash[:notice] = "#{user.email} is now a regular user."
+      end
+  
+      redirect_to admin_users_path
+    end
+  
+    private
+  
+    def authorize_admin
+      redirect_to root_path, alert: "Not authorized" unless current_user.has_role?(:admin)
+    end
   end
-
-  private
-
-  # Temporarily allow all users to access update_role
-  def authorize_admin
-    return if action_name == "update_role" # Skip admin check for this action
-  end
-end
+  
