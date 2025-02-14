@@ -1,10 +1,14 @@
-admin_role = Role.find_or_create_by(name: 'admin')
+admin_email = "sandra@gmail.com"
+admin_password = "123456"  
+
+User.find_by(email: admin_email)&.destroy
+
+user = User.create!(
+  email: admin_email,
+  password: admin_password,
+  password_confirmation: admin_password
+)
 
 
-user = User.find_by(email: 'lewiwajak@gmail.com')
-if user
-  user.add_role(:admin) unless user.has_role?(:admin)
-  puts "Admin role assigned to #{user.email}"
-else
-  puts "User not found! Make sure the user exists before running this."
-end
+user.add_role(:admin)
+puts "✅ New admin user created: #{user.email}"
