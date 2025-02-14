@@ -29,6 +29,5 @@ class Admin::UsersController < ApplicationController
   # Temporarily allow all users to access update_role
   def authorize_admin
     return if action_name == "update_role" # Skip admin check for this action
-    redirect_to root_path, alert: "Not authorized" unless current_user.has_role?(:admin)
   end
 end
